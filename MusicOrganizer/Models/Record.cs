@@ -42,7 +42,8 @@ public Record(string title, int id)
 
     public static void ClearAll()
     {
-
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
     }
 
     public static Record Find(int searchId)
