@@ -69,10 +69,31 @@ namespace MusicOrganizer.Models
       }
     }
 
-    public static Record Find(int searchId)
+    public static Record Find(int id)
     {
-      Record placeHolder = new Record("placeHolder");
-      return placeHolder;
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM `records` WHERE id = @thisID;";
+      MySqlParameter thisId = new MySqlParameter();
+      thisId.ParameterName = "@thisId";
+      thisId.Value = id;
+      cmd.Parameters.Add(thisId);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int recordId = 0;
+      string recordTitle = "";
+      while (rdr.Read())
+      {
+        recordId = rdr.GetInt32(0);
+        recordTitle = rdr.GetString(1);
+      }
+      Record foundRecord = new Record(recordTitle, recordId);
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return foundRecord;
     }
 
     public void Save()
