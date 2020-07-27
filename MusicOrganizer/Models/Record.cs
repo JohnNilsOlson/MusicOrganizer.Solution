@@ -7,17 +7,20 @@ namespace MusicOrganizer.Models
   {
     public string Title { get; set; }
     public string Artist { get; set; }
+    public string Genre { get; set; }
     public int Id { get; set; }
 
-    public Record (string title, string artist)
+    public Record (string title, string artist, string genre)
     {
       Title = title;
       Artist = artist;
+      Genre = genre;
     }
-    public Record(string title, string artist, int id)
+    public Record(string title, string artist, string genre, int id)
     {
       Title = title;
       Artist = artist;
+      Genre = genre;
       Id = id;
     }
     public static List<Record> GetAll()
@@ -33,7 +36,8 @@ namespace MusicOrganizer.Models
         int recordId = rdr.GetInt32(0);
         string recordTitle = rdr.GetString(1);
         string recordArtist = rdr.GetString(2);
-        Record newRecord = new Record(recordTitle, recordArtist, recordId);
+        string recordGenre = rdr.GetString(3);
+        Record newRecord = new Record(recordTitle, recordArtist, recordGenre, recordId);
         allRecords.Add(newRecord);
       }
       conn.Close();
@@ -87,12 +91,15 @@ namespace MusicOrganizer.Models
       int recordId = 0;
       string recordTitle = "";
       string recordArtist = "";
+      string recordGenre = "";
       while (rdr.Read())
       {
         recordId = rdr.GetInt32(0);
         recordTitle = rdr.GetString(1);
+        recordArtist = rdr.GetString(2);
+        recordGenre = rdr.GetString(3);
       }
-      Record foundRecord = new Record(recordTitle, recordArtist, recordId);
+      Record foundRecord = new Record(recordTitle, recordArtist, recordGenre, recordId);
       conn.Close();
       if (conn != null)
       {
@@ -106,7 +113,7 @@ namespace MusicOrganizer.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO records (title, artist) VALUES (@RecordTitle, @RecordArtist);";
+      cmd.CommandText = @"INSERT INTO records (title, artist, genre) VALUES (@RecordTitle, @RecordArtist, @RecordGenre);";
       MySqlParameter title = new MySqlParameter();
       title.ParameterName = "@RecordTitle";
       title.Value = this.Title;
@@ -115,6 +122,10 @@ namespace MusicOrganizer.Models
       artist.ParameterName = "@RecordArtist";
       artist.Value = this.Artist;
       cmd.Parameters.Add(artist);
+      MySqlParameter genre = new MySqlParameter();
+      genre.ParameterName = "@RecordGenre";
+      genre.Value = this.Genre;
+      cmd.Parameters.Add(genre);
       cmd.ExecuteNonQuery();
       Id = (int) cmd.LastInsertedId;
       conn.Close();
