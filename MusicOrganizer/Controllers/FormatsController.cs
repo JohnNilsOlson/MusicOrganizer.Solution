@@ -43,6 +43,7 @@ namespace MusicOrganizer.Controllers
       Dictionary<string, object> model = new Dictionary<string, object>();
       Format foundFormat = Format.Find(formatId);
       Record newRecord = new Record(recordTitle);
+      newRecord.Save();
       foundFormat.AddRecord(newRecord);
       List<Record> formatRecords = foundFormat.Records;
       model.Add("records", formatRecords);
