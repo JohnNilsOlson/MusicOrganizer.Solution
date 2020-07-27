@@ -6,15 +6,18 @@ namespace MusicOrganizer.Models
   public class Record
   {
     public string Title { get; set; }
-    public int Id { get; set;  }
+    public string Artist { get; set; }
+    public int Id { get; set; }
 
-    public Record (string title)
+    public Record (string title, string artist)
     {
       Title = title;
+      Artist = artist;
     }
-    public Record(string title, int id)
+    public Record(string title, string artist, int id)
     {
       Title = title;
+      Artist = artist;
       Id = id;
     }
     public static List<Record> GetAll()
@@ -29,7 +32,8 @@ namespace MusicOrganizer.Models
       {
         int recordId = rdr.GetInt32(0);
         string recordTitle = rdr.GetString(1);
-        Record newRecord = new Record(recordTitle, recordId);
+        string recordArtist = rdr.GetString(2);
+        Record newRecord = new Record(recordTitle, recordArtist, recordId);
         allRecords.Add(newRecord);
       }
       conn.Close();
@@ -82,12 +86,13 @@ namespace MusicOrganizer.Models
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       int recordId = 0;
       string recordTitle = "";
+      string recordArtist = "";
       while (rdr.Read())
       {
         recordId = rdr.GetInt32(0);
         recordTitle = rdr.GetString(1);
       }
-      Record foundRecord = new Record(recordTitle, recordId);
+      Record foundRecord = new Record(recordTitle, recordArtist, recordId);
       conn.Close();
       if (conn != null)
       {
@@ -101,11 +106,15 @@ namespace MusicOrganizer.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO records (title) VALUES (@RecordTitle);";
+      cmd.CommandText = @"INSERT INTO records (title, artist) VALUES (@RecordTitle, @RecordArtist);";
       MySqlParameter title = new MySqlParameter();
       title.ParameterName = "@RecordTitle";
       title.Value = this.Title;
       cmd.Parameters.Add(title);
+      MySqlParameter artist = new MySqlParameter();
+      artist.ParameterName = "@RecordArtist";
+      artist.Value = this.Artist;
+      cmd.Parameters.Add(artist);
       cmd.ExecuteNonQuery();
       Id = (int) cmd.LastInsertedId;
       conn.Close();

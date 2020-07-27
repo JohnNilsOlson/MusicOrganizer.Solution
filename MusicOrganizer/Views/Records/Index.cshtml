@@ -17,15 +17,6 @@
     <li><a href='/records/@record.Id'>@record.Title</a></li>
   }
 </ul>
-
-<h3>All Artists</h3>
-<ul>
-  @foreach (Record record in Model)
-  {
-    <li><a href='/records/@record.Id'>@record.Artist</a></li>
-  }
-</ul>
-
 <a href="/records/new">Add a new record.</a>
 <form action="/records/delete" method="post">
   <button type="submit" name="button">Clear All Items</button>

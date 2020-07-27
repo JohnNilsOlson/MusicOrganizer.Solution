@@ -9,17 +9,9 @@
 <ol>
 @foreach (Record record in @Model["records"])
 {
-  <li><a href='/formats/@Model["format"].Id/records/@record.Id'>@record.Title</a></li>
+  <li><a href='/formats/@Model["format"].Id/records/@record.Id'>@record.Title - @record.Artist</a></li>
 }
 </ol>
-
-<!-- <h3>Here are all the artists in this format:</h3>
-<ol>
-@foreach (Record record in @Model["records"])
-{
-  <li><a href='/formats/@Model["format"].Id/records/@record.Id'>@record.Artist</a></li>
-}
-</ol> -->
 
 <p><a href='/formats/@Model["format"].Id/records/new'>Add a new record</a></p>
 <p><a href='/formats'>Return to format list</a></p>
