@@ -25,5 +25,14 @@ namespace MusicOrganizer.Tests
       List<Record> result = Record.GetAll();
       CollectionAssert.AreEqual(newList, result);
     }
+
+    [TestMethod]
+    public void Equals_ReturnsTrueIfTitlesAreTheSame_Record()
+    {
+      Record firstRecord = new Record("test");
+      Record secondRecord = new Record("test");
+
+      Assert.AreEqual(firstRecord, secondRecord);
+    }
   }
 }
