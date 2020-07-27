@@ -38,11 +38,11 @@ namespace MusicOrganizer.Controllers
       return View(model);
     }
     [HttpPost("/formats/{formatId}/records")]
-    public ActionResult Create(int formatId, string recordTitle, string recordArtist, string recordGenre)
+    public ActionResult Create(int formatId, string recordTitle, string recordArtist, string recordGenre, string recordReleaseDate)
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
       Format foundFormat = Format.Find(formatId);
-      Record newRecord = new Record(recordTitle, recordArtist, recordGenre);
+      Record newRecord = new Record(recordTitle, recordArtist, recordGenre, recordReleaseDate);
       newRecord.Save();
       foundFormat.AddRecord(newRecord);
       List<Record> formatRecords = foundFormat.Records;
