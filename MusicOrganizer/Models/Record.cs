@@ -6,17 +6,17 @@ namespace MusicOrganizer.Models
   public class Record
   {
     public string Title { get; set; }
-    public int Id { get; }
+    public int Id { get; set;  }
 
     public Record (string title)
     {
       Title = title;
     }
-public Record(string title, int id)
-{
-  Title = title;
-  Id = id;
-}
+    public Record(string title, int id)
+    {
+      Title = title;
+      Id = id;
+    }
     public static List<Record> GetAll()
     {
       List<Record> allRecords = new List<Record> {};
@@ -63,8 +63,9 @@ public Record(string title, int id)
       else
       {
         Record newRecord = (Record) otherRecord;
+        bool idEquality = (this.Id == newRecord.Id);
         bool titleEquality = (this.Title == newRecord.Title);
-        return titleEquality;
+        return (idEquality && titleEquality);
       }
     }
 
@@ -72,6 +73,25 @@ public Record(string title, int id)
     {
       Record placeHolder = new Record("placeHolder");
       return placeHolder;
+    }
+
+    public void Save()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO records (title) VALUES (@RecordTitle);";
+      MySqlParameter title = new MySqlParameter();
+      title.ParameterName = "@RecordTitle";
+      title.Value = this.Title;
+      cmd.Parameters.Add(title);
+      cmd.ExecuteNonQuery();
+      Id = (int) cmd.LastInsertedId;
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
     }
   }
 }
