@@ -60,5 +60,21 @@ namespace MusicOrganizer.Tests
 
       CollectionAssert.AreEqual(newList, result);
     }
+
+    [TestMethod]
+    public void Find_ReturnsCorrectRecordFromDatabase_Record()
+    {
+      // Arrange
+      Record newRecord = new Record("This is a record");
+      newRecord.Save();
+      Record newRecord2 = new Record("This is also a record");
+      newRecord2.Save();
+
+      // Act
+      Record foundRecord = Record.Find(newRecord.Id);
+
+      // Assert
+      Assert.AreEqual(newRecord, foundRecord);
+    }
   }
 }
