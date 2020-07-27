@@ -14,6 +14,7 @@ JohnNils Olson
 | Behavior | Input | Output |
 | ---- | ---- | ---- |
 
+## Database usage
 
 ## _Technologies Used_
 C#  
