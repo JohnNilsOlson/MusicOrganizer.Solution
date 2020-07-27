@@ -44,5 +44,21 @@ namespace MusicOrganizer.Tests
       List<Record> testList = new List<Record> {testRecord};
       CollectionAssert.AreEqual(testList, result);
     }
+
+    [TestMethod]
+    public void GetAll_ReturnsRecords_RecordsList()
+    {
+      string title1 = "test title 1";
+      string title2 = "test title 2";
+      Record newRecord1 = new Record(title1);
+      Record newRecord2 = new Record(title2);
+      newRecord1.Save();
+      newRecord2.Save();
+      List<Record> newList = new List<Record> { newRecord1, newRecord2 };
+
+      List<Record> result = Record.GetAll();
+
+      CollectionAssert.AreEqual(newList, result);
+    }
   }
 }
