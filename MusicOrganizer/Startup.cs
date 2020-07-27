@@ -43,4 +43,8 @@ namespace MusicOrganizer
 
     }
   }
+  public static class DBConfiguration
+  {
+    public static string ConnectionString = "server=localhost;user id=root;password=epicodus;port=3306;database=music_organizer;";
+  }
 }
