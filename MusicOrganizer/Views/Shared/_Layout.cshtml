@@ -9,7 +9,9 @@
   <body>
     <div class="flex container">
       @Html.Partial("Header")
-      @RenderBody()
+      <div class="container" id="main">
+        @RenderBody()
+      </div>
       @Html.Partial("Footer")
     </div>
   </body>
