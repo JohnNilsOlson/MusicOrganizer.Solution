@@ -54,6 +54,20 @@ public Record(string title, int id)
       }
     }
 
+    public override bool Equals(System.Object otherRecord)
+    {
+      if (!(otherRecord is Record))
+      {
+        return false;
+      }
+      else
+      {
+        Record newRecord = (Record) otherRecord;
+        bool titleEquality = (this.Title == newRecord.Title);
+        return titleEquality;
+      }
+    }
+
     public static Record Find(int searchId)
     {
       Record placeHolder = new Record("placeHolder");
