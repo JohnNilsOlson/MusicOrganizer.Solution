@@ -34,5 +34,15 @@ namespace MusicOrganizer.Tests
 
       Assert.AreEqual(firstRecord, secondRecord);
     }
+
+    [TestMethod]
+    public void Save_SavesToDatabase_RecordList()
+    {
+      Record testRecord = new Record("test title");
+      testRecord.Save();
+      List<Record> result = Record.GetAll();
+      List<Record> testList = new List<Record> {testRecord};
+      CollectionAssert.AreEqual(testList, result);
+    }
   }
 }
