@@ -1,35 +1,54 @@
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
 
 namespace MusicOrganizer.Models
 {
   public class Record
   {
     public string Title { get; set; }
-    public string Artist { get; set; }
     public int Id { get; }
-    private static List<Record> _instances = new List<Record> {};
 
-    public Record (string title, string artist)
+    public Record (string title)
     {
       Title = title;
-      Artist = artist;
-      _instances.Add(this);
-      Id = _instances.Count;
     }
-
+public Record(string title, int id)
+{
+  Title = title;
+  Id = id;
+}
     public static List<Record> GetAll()
     {
-      return _instances;
+      List<Record> allRecords = new List<Record> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM records;";
+      MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while (rdr.Read())
+      {
+        int recordId = rdr.GetInt32(0);
+        string recordTitle = rdr.GetString(1);
+        Record newRecord = new Record(recordTitle, recordId);
+        allRecords.Add(newRecord);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allRecords;
     }
 
     public static void ClearAll()
     {
-      _instances.Clear();
+
     }
 
     public static Record Find(int searchId)
     {
-      return _instances[searchId-1];
+      Record placeHolder = new Record("placeHolder");
+      return placeHolder;
     }
   }
 }
